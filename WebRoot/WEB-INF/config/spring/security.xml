@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+    xmlns:beans="http://www.springframework.org/schema/beans"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<context:component-scan base-package="org.thcic.xapx.security" />
+
+    <global-method-security pre-post-annotations="enabled" />
+
+    <http pattern="/res/**" security="none"/>
+    <http pattern="/login" security="none"/>
+    <http pattern="/u/demo/**" security="none"/>
+    <http pattern="/rest/demo/**" security="none"/>
+    <http pattern="/rest/equipment/**" security="none"/>
+    <http pattern="/demo/**" security="none"/>
+
+    <http auto-config="true" use-expressions="true">
+    
+    	<!--
+        <intercept-url pattern="/admin/**" access="hasRole('admin')"/>
+        <intercept-url pattern="/user/**" access="hasAnyRole('admin', 'user')"/>
+        <intercept-url pattern="/rest/**" access="hasAnyRole('admin', 'user')"/>
+        <intercept-url pattern="/secure/**" access="isAuthenticated()" />
+        -->
+        
+        <intercept-url pattern="/u/equipment/**" access="hasRole('user')"/>
+        
+        <!-- 
+        	登录与退出
+        	简单的form实现
+        	Login path - j_spring_security_check
+    		Logout path - j_spring_security_logout
+    		Username http param - j_username 
+    		Password http param - j_password 
+    	-->
+        
+        <form-login login-page="/login" 
+        	authentication-success-handler-ref="authorityBasedAuthenticationSuccessHandler"
+			authentication-failure-url="/loginfailed" />
+        <logout logout-success-url="/login" />
+        <!-- <remember-me /> -->
+        
+        <intercept-url pattern="/**" access="denyAll" />
+        
+		<!--
+	    Uncomment to enable X509 client authentication support
+	        <x509 />
+		-->
+	
+        <!-- Uncomment to limit the number of sessions a user can have
+        <session-management invalid-session-url="/timeout.jsp">
+            <concurrency-control max-sessions="1" error-if-maximum-exceeded="true" />
+        </session-management> -->
+
+    </http>
+    
+    <authentication-manager>
+        <authentication-provider>
+            <password-encoder hash="md5" />
+            <!--
+		    Usernames/Passwords are
+		        admin/admin
+		        user/user
+		        guest/user
+		    -->		    
+            <user-service>
+                <user name="admin" password="21232f297a57a5a743894a0e4a801fc3" authorities="admin, user" />
+                <user name="user" password="ee11cbb19052e40b07aac0ca060c23ee" authorities="user" />
+                <user name="guest" password="ee11cbb19052e40b07aac0ca060c23ee" authorities="guest" />
+            </user-service>
+            
+            <!--
+            <jdbc-user-service data-source-ref="dataSource" 
+            	users-by-username-query="select USERNAME,PASSWORD,ENABLED from SYS_USER where USERNAME=? "
+            	authorities-by-username-query="select A.USERNAME,B.ROLE_NAME from SYS_USER A,SYS_ROLE B,SYS_USERROLE C where A.USERNAME=? and A.USER_ID=C.USER_ID AND B.ROLE_ID=C.ROLE_ID " />
+        	-->
+        </authentication-provider>
+    </authentication-manager>
+
+</beans:beans>

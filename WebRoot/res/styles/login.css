@@ -1,0 +1,79 @@
+﻿@charset "utf-8";
+
+body {
+	background:#298c35 url(../images/login_bg_06.gif) repeat-x;
+	color:#333;
+}
+#login {
+	margin:0 auto;
+	width:100%;
+}
+.login_c {
+	margin:89px auto 0;
+	width:500px;
+	height:529px;
+	background:url(../images/login_wrap_06.png) no-repeat;
+}
+.login_box {
+	padding:30px 0 0 30px;
+	width:470px;
+	height:310px;
+	position:relative;
+}
+.decoration {
+	width:163px;
+	height:167px;
+	background:url(../images/login_decoration_09.png) no-repeat;
+	position:absolute;
+	left:23px;
+	top:24px;
+	z-index:9;
+}
+.login_inner {
+	width:444px;
+	height:279px;
+	background:url(../images/login_inner_12.png) no-repeat;
+}
+.login_inner h1 {
+	display:block;
+	padding:37px 0 0 122px;
+	width:257px;
+	height:27px;
+	background:url(../images/login_title_15.png) no-repeat 122px 37px;
+	text-indent:-9999px;
+}
+.login_txt {
+	font-size:14px;
+	font-family:'微软雅黑';
+	color:#333;
+}
+.login_input {
+	width:150px;
+	height:23px;
+	line-height:23px;
+	background:#fff;
+	border:1px solid #b0b0b0;
+}
+.login_wrap {
+	z-index:10;
+	margin:50px 0 0 80px;
+}
+.login_btn {
+	margin-right:10px;
+	width:65px;
+	height:24px;
+	line-height:24px;
+	border:none;
+	font-size:14px;
+	color:#fff;
+	font-weight:bold;
+	cursor:pointer;
+	background:url(../images/login_btn_20.png) no-repeat;
+}
+.star {
+	position:absolute;
+	right:40px; 
+	bottom:50px;
+}
+
+

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Upload5 Demo by BitCandies</title>
+        <script src="../bitcandies.upload5.js"></script>
+        <script src="/res/scripts/jquery-1.7.2.min.js"></script>
+        <link rel="stylesheet" href="style.css" type="text/css" />
+    </head>
+    <body>
+    
+        <h1>Upload5</h1>
+        <p>Drag'n'drop demo</p>
+    
+        <div id="drop">
+            <span>Drop files here</span>
+        </div>
+        
+        <ul id="output">
+        </ul>
+    
+        <script type="text/javascript">
+            var $lis = {};
+            var uploader = new bitcandies.FileUploader({
+                url: '/demo/upload/up5',
+
+                enqueued: function (item) {
+                    var $li = $('<li>').addClass('enqueued');
+                    $li.append($('<span>').addClass('title').text(item.getFilename()));
+                    $li.append($('<span>').addClass('abort').append($('<a href="#">cancel</a>').click(function() { uploader.abort(item); })));
+                    $li.append($('<div>').addClass('progress').append($('<div>').addClass('bar')));
+                    $lis[item.id] = $li;
+                    $('#output').append($li);
+                },
+                start: function (item) {
+                    $lis[item.id].removeClass('enqueued').addClass('uploading');
+                },
+                aborted: function (item) {
+                    $lis[item.id].removeClass('enqueued uploading').addClass('aborted');
+                },
+                progress: function (item, loaded, total) {
+                    $lis[item.id].find('.progress .bar').css('width', Math.round(loaded / total * 100) + '%');
+                },
+                success: function (item) {
+                    $lis[item.id].removeClass('uploading').addClass('success');
+                },
+                error: function (item) {
+                    $lis[item.id].removeClass('uploading').addClass('error');
+                }
+            });
+
+            function handleDragOver(evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+            }
+            function handleDrop(evt) {
+                evt.stopPropagation();
+                evt.preventDefault();
+                var files = evt.dataTransfer.files;
+                for (var i = 0; i < files.length; ++i) {
+                    uploader.add(files[i]);
+                }
+            }
+            var dropArea = document.getElementById('drop');
+            dropArea.addEventListener('dragover', handleDragOver, false);
+            dropArea.addEventListener('drop', handleDrop, false);
+        </script>
+    </body>
+</html>

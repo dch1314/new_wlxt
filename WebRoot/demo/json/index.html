@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>军事装备管理系统</title>
+	<link href="/res/styles/common.css" rel="stylesheet" type="text/css" />
+	<link href="/res/styles/style.css" rel="stylesheet" type="text/css" />
+	<script type="text/javascript" src="/res/scripts/jquery-1.7.2.min.js"></script>
+	<script type="text/javascript" src="/res/scripts/function.js"></script>
+	<script type="text/javascript">
+		function start_load_menu() {
+			$.get("/rest/demo/user/getMenu", function(json) {
+				if (json.result == "success") {
+					$.each(json.object, function(i, menu) {
+						$("#menu").append("<a href='#' onclick='return false;'>" + menu + "</a>");
+					});
+				}
+			});
+		}
+
+		function start_load_data() {
+			$.get("/rest/equipment/getAll", function(json) {
+				render(json);
+			});
+		}
+		function render(json) {
+			if (json.result == "success") {
+				$.each(json.object, function(i, equipment) {
+					renderSingle(equipment);
+				});
+			}
+		}
+		function renderSingle(equipment) {
+			$("ul.data").append(
+				'<li><div class="dataBox"><p>编号：' + equipment.eqId + '</p><p>型号：' + equipment.model + '</p>'
+				+ '<p><span class="right_blank10">质量：' + equipment.weight
+				+ '</span><span>数量：' + equipment.quantity + '</span></p>'
+				+ '<p><span class="right_blank10">类型：' + equipment.codeEqType.name
+				+ '</span><span>状态：' + equipment.codeEqStatus.name + '</span></p>'
+				+ '<p><span class="right_blank10">责任人：' + equipment.personResp + '</span>'
+				+ '</div></ li>'
+			);
+		}
+		$(function(){
+			start_load_menu();
+			start_load_data();
+		});
+	</script>
+</head>
+
+<body>
+	<div id="wrap">
+		<div id="head">
+			<div class="head_c">
+				<a class="left" href="#" alt="军事管理系统"><img src="/res/images/head_logo_03.gif"/></a>
+			</div>
+		</div>
+		
+		<div id="content">
+			<div class="content_c">
+				<div id="menu" class="left_c">
+					<h1>通过JSON接口读取菜单和数据</h1>
+					<!--<a href="#" onclick="start_load(); return false;">读取数据</a>-->
+				</div>
+				<div class="right_c">
+					<div class="sortable">
+						<div class="sortable_btn">
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="dataList">
+						<ul id="data" class="data"></ul>
+					</div>
+				</div>
+				<div class="clear"></div>
+			</div>
+		</div>
+		
+		<div id="footer">
+			<div class="footer_c"><span class="right">Copyright © 2013 军事装备管理系统© 清华大学信息化技术中心</span></div>
+		</div>
+	</div>
+</body>
+</html>
